@@ -6,10 +6,10 @@
 
 ### Tecnologías utiliadas:
 
-#### Se crea base de datos en MongoDb Atlas/ java 11/ maven/ reactive spring boot  
+#### Se crea base de datos en MongoDB Atlas/ java 11/ maven/ reactive spring boot  
 
-### Endpoints
-#### Los endpoints se crean basandose en el diseño de las interfaces de usuario:
+### Endpoints:
+#### Los endpoints se crean basándose en el diseño de las interfaces de usuario:
 
 #### 1) En la página inicial se mostrará una tabla, la cual contiene la lista de equipos registrados, para esto  se crea el siguiente endpoint:
 
@@ -28,7 +28,7 @@
 
 ![img_3.png](img_3.png)
 
-#### 4) Cada equipo tendrá una opción que permite ver el detalle, en el cual incluye la lista de ciclistas por cada  equipo.
+#### 4) Cada equipo tendrá una opción que permite ver el detalle, en el cual incluye la lista de ciclistas por equipo.
 
 #### http://localhost:8080/getTeamById/62cf9a337173b84ee02eb36f
 
@@ -50,6 +50,9 @@
 #### http://localhost:8080/updateCyclist
 
 ![img_6.png](img_6.png)
+
+
+#### Nota: Para el modelo se utiliza una arquitectura por capas internas, donde la capa de presentación corresponde a los routers, la de negocio a los casos de uso y la capa de infraestructura corresponde a los repositorios.
 
 
 
