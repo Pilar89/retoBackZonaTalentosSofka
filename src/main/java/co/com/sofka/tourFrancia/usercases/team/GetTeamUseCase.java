@@ -32,6 +32,8 @@ public class GetTeamUseCase implements Function<String, Mono<TeamDTO>> {
     this.cyclistMapper = cyclistMapper;
   }
 
+
+
   @Override
   public Mono<TeamDTO> apply(String id) {
     Objects.requireNonNull(id, "Id is required");

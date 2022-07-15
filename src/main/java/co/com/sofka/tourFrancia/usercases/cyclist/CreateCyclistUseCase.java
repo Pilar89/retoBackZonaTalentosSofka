@@ -17,6 +17,7 @@ public class CreateCyclistUseCase implements SaveCyclist {
   private final CyclistMapper cyclistMapper;
   private final TeamRepository teamRepository;
 
+
   public CreateCyclistUseCase(
       CyclistRepository cyclistRepository,
       CyclistMapper cyclistMapper,
@@ -28,16 +29,16 @@ public class CreateCyclistUseCase implements SaveCyclist {
 
   @Override
   public Mono<String> apply(CyclistDTO cyclistDTO) {
-    return guarda(cyclistDTO);
+    return guardar(cyclistDTO);
   }
 
-  public Mono<String> guarda(CyclistDTO cyclistDTO) {
+  public Mono<String> guardar(CyclistDTO cyclistDTO) {
     return cyclistRepository
         .save(cyclistMapper.cyclistDTOToCyclist(null).apply(cyclistDTO))
-        .flatMap(risk -> teamRepository.findById(risk.getTeamId()))
+        .flatMap(cyclist -> teamRepository.findById(cyclist.getTeamId()))
         .flatMap(
-            project -> {
-              return teamRepository.save(project);
+            team -> {
+              return teamRepository.save(team);
             })
         .map(Team::getId)
         .switchIfEmpty(Mono.defer(() -> Mono.just("Empty")));
