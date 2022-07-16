@@ -4,6 +4,7 @@ import co.com.sofka.tourFrancia.collections.Team;
 import co.com.sofka.tourFrancia.mappers.TeamMapper;
 import co.com.sofka.tourFrancia.model.TeamDTO;
 import co.com.sofka.tourFrancia.repositories.TeamRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,8 @@ public class UpdateTeamUseCase implements SaveTeam {
   @Override
   public Mono<String> apply(TeamDTO updateTeam) {
     Objects.requireNonNull(updateTeam.getId(), "El id del equipo no puede ser nulo");
+    String country = updateTeam.getCountry();
+    updateTeam.setCountry(StringUtils.capitalize(StringUtils.lowerCase(country)));
     return teamRepository
         .save(teamMapper.mapperToTeam(updateTeam.getId()).apply(updateTeam))
         .map(Team::getId);

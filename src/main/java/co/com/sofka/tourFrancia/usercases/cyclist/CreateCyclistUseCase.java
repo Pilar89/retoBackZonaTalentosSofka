@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
 @Service
 @Validated
 public class CreateCyclistUseCase implements SaveCyclist {
@@ -29,7 +35,22 @@ public class CreateCyclistUseCase implements SaveCyclist {
 
   @Override
   public Mono<String> apply(CyclistDTO cyclistDTO) {
-    return guardar(cyclistDTO);
+    var prueba =1;
+    List<String> list3 = new ArrayList<>();
+    var v = 0;
+
+    var cyclistList =
+        cyclistRepository
+            .findAllByTeamId(cyclistDTO.getTeamId()).collect(Collectors.toList()).share().block();
+    System.out.println("size "+cyclistList.size());
+    System.out.println("valor "+cyclistList);
+    System.out.println("long "+v);
+    if (cyclistList.size()<=8){
+      return guardar(cyclistDTO);
+    }
+    System.out.println("No se puede agregar mas ciclistas, el equipo esta completo");
+    return null;
+
   }
 
   public Mono<String> guardar(CyclistDTO cyclistDTO) {

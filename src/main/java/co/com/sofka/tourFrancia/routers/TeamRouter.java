@@ -1,10 +1,7 @@
 package co.com.sofka.tourFrancia.routers;
 
 import co.com.sofka.tourFrancia.model.TeamDTO;
-import co.com.sofka.tourFrancia.usercases.team.CreateTeamUseCase;
-import co.com.sofka.tourFrancia.usercases.team.GetAllTeamsUseCase;
-import co.com.sofka.tourFrancia.usercases.team.GetTeamUseCase;
-import co.com.sofka.tourFrancia.usercases.team.UpdateTeamUseCase;
+import co.com.sofka.tourFrancia.usercases.team.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -51,20 +48,16 @@ public class TeamRouter {
   // Fitrar equipo por country
 
   @Bean
-  public RouterFunction<ServerResponse> getTeamByCountry(GetAllTeamsUseCase getAllTeamsUseCase) {
+  public RouterFunction<ServerResponse> getTeamByCountry(
+      GetTeamByCountryUseCase getTeamByCountryUseCase) {
     return route(
-        GET("/getTeamsByCountry/{country}"),
+        GET("/getTeamByCountry/{country}").and(accept(MediaType.APPLICATION_JSON)),
         request ->
             ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                     BodyInserters.fromPublisher(
-                        getAllTeamsUseCase
-                            .get()
-                            .filter(
-                                team ->
-                                    team.getCountry()
-                                        .equalsIgnoreCase(request.pathVariable("country"))),
+                        getTeamByCountryUseCase.apply(request.pathVariable("country")),
                         TeamDTO.class)));
   }
 
@@ -125,5 +118,18 @@ public class TeamRouter {
     return route(
         PUT("/updateTeam").and(accept(MediaType.APPLICATION_JSON)),
         request -> request.bodyToMono(TeamDTO.class).flatMap(executor));
+  }
+
+  // eliminar equipo
+  @Bean
+  public RouterFunction<ServerResponse> deleteTeam(DeleteTeamUseCase deleteTeamUseCase) {
+    return route(
+        DELETE("/deleteTeam/{id}").and(accept(MediaType.APPLICATION_JSON)),
+        request ->
+            ServerResponse.accepted()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    BodyInserters.fromPublisher(
+                        deleteTeamUseCase.apply(request.pathVariable("id")), Void.class)));
   }
 }

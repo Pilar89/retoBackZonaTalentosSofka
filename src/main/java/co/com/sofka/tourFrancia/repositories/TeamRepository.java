@@ -1,6 +1,6 @@
 package co.com.sofka.tourFrancia.repositories;
 
-import co.com.sofka.tourFrancia.collections.Cyclist;
+
 import co.com.sofka.tourFrancia.collections.Team;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
